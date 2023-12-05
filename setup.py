@@ -9,7 +9,7 @@ setup(
     install_requires=[
         'aiohttp==3.8.4',
         'aiosignal==1.3.1',
-        'apispec'==6.0.2
+        'apispec'==6.0.2,
         'async-timeout'==4.0.2,
         'attrs'==22.2.0,
         'awscli-local'==0.20,
