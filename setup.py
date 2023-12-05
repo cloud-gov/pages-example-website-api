@@ -2,10 +2,10 @@ from setuptools import setup
 
 setup(
     name='cypyapi',
-    version='1.0.0'
-    description='cloud.gov API'
-    author='Ephraim'
-    packages=['Santas bag']
+    version='1.0.0',
+    description='cloud.gov API',
+    author='Ephraim',
+    packages=['Santas bag'],
     install_requires=[
         'aiohttp==3.8.4',
         'aiosignal==1.3.1',
