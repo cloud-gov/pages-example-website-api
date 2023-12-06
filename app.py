@@ -4,6 +4,7 @@ from flask import Flask, jsonify
 from cfenv import AppEnv
 
 app = Flask(__name__)
+app_env = AppEnv()
 
 # Get mysql creds from cloud.gov/import cloud.gov env vars
 mysql_credentials = {
