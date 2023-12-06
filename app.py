@@ -35,7 +35,7 @@ connection = mysql.connector.connect(
 # connection = mysql.connector.connect(**mysql_credentials)
 
 # DB operations/ insert app path from cloud.gov
-@app.route('cfpyapi.app.cloud.gov', methods=['GET'])
+@app.route('/cfpyapi.app.cloud.gov', methods=['GET'])
 def get_gif():
     cursor = connection.cursor()
     
