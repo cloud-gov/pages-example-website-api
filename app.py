@@ -6,20 +6,20 @@ from cfenv import AppEnv
 app = Flask(__name__)
 app_env = AppEnv()
 
-# Get mysql creds from cloud.gov/import cloud.gov env vars
+# Get mysql creds from cloud.gov/import cloud.gov env vars change structure
 mysql_credentials = {
-    'host': os.environ['MYSQL_HOST'],
-    'port': os.environ['MYSQL_PORT'],
-    'user': os.environ['MYSQL_USER'],
-    'password': os.environ['MYSQL_PASSWORD'],
-    'database': os.environ['MYSQL_DATABASE'],
+    'host': os.environ['host'],
+    'port': os.environ['port'],
+    'user': os.environ['username'],
+    'password': os.environ['password'],
+    'database': os.environ['db_name'],
 }
 
 # connect to DB
 connection = mysql.connector.connect(**mysql_credentials)
 
 # DB operations/ insert app path from cloud.gov
-@app.route('/app/gif', methods=['GET'])
+@app.route('cfpyapi.app.cloud.gov', methods=['GET'])
 def get_gif():
     cursor = connection.cursor()
     
