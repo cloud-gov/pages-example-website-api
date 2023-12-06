@@ -36,6 +36,7 @@ marshmallow==3.19.0
 marshmallow-enum==1.5.1
 multidict==6.0.4
 mypy-extensions==1.0.0
+mysql-connector-python==8.2.0
 newrelic-telemetry-sdk==0.4.3
 nr-openai-observability==0.2.4
 numexpr==2.8.4
@@ -46,6 +47,7 @@ packaging==21.3
 pandas==2.0.1
 pbr==5.11.0
 plux==1.3.1
+protobuf==4.21.12
 psutil==5.9.4
 pyaes==1.6.1
 pyasn1==0.4.8
