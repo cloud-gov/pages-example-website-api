@@ -1,4 +1,5 @@
 ---
 applications:
 - name: cfpyapi
-  
+  command: null
+  type: application
