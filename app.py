@@ -9,7 +9,7 @@ app_env = AppEnv()
 # Get mysql creds from cloud.gov/import cloud.gov env vars change structure
 
 mysql_service = app_env.get_service(name='lightening-db')
-mysql_credentials = mysql_service.get_credentials
+mysql_credentials = mysql_service.credentials
 
 host = mysql_credentials['host']
 user = mysql_credentials['username']
