@@ -1,3 +1,4 @@
 ---
 applications:
 - name: cfpyapi
+  command: python app.py
