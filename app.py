@@ -12,9 +12,9 @@ mysql_service = app_env.get_service(name='lightening-db')
 mysql_credentials = mysql_service.credentials
 
 host = mysql_credentials['host']
-user = mysql_credentials['username']
+username = mysql_credentials['username']
 password = mysql_credentials['password']
-database = mysql_credentials['name']
+name = mysql_credentials['name']
 
 connection = mysql.connector.connect(
     host=host,
