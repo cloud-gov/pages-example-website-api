@@ -8,31 +8,31 @@ app_env = AppEnv()
 
 # Get mysql creds from cloud.gov/import cloud.gov env vars change structure
 
-mysql_service = app_env.get_service(name='lightening-db')
-mysql_credentials = mysql_service.credentials
+#mysql_service = app_env.get_service(name='lightening-db')
+#mysql_credentials = mysql_service.credentials
 
-host = mysql_credentials['host']
-username = mysql_credentials['username']
-password = mysql_credentials['password']
-name = mysql_credentials['name']
+#host = mysql_credentials['host']
+#username = mysql_credentials['username']
+#password = mysql_credentials['password']
+#name = mysql_credentials['name']
 
-connection = mysql.connector.connect(
-    host=host,
-    user=username,
-    password=password,
-    database=name
-)
+#connection = mysql.connector.connect(
+    #host=host,
+    #user=username,
+    #password=password,
+    #database=name
+#)
 
-#mysql_credentials = {
-    #'host': os.environ['host'],
-    #'port': os.environ['port'],
-    #'user': os.environ['username'],
-    #'password': os.environ['password'],
-    #'database': os.environ['db_name'],
-#}
+mysql_credentials = {
+    'host': os.environ['host'],
+    'port': os.environ['port'],
+    'user': os.environ['username'],
+    'password': os.environ['password'],
+    'database': os.environ['db_name'],
+}
 
 # connect to DB
-# connection = mysql.connector.connect(**mysql_credentials)
+connection = mysql.connector.connect(**mysql_credentials)
 
 # DB operations/ insert app path from cloud.gov
 @app.route('/cfpyapi.app.cloud.gov', methods=['GET'])
