@@ -23,16 +23,23 @@ app_env = AppEnv()
     #database=name
 #)
 
-mysql_credentials = {
-    'host': os.environ['host'],
-    'port': os.environ['port'],
-    'user': os.environ['username'],
-    'password': os.environ['password'],
-    'database': os.environ['db_name'],
-}
+#mysql_credentials = {
+    #'host': os.environ['host'],
+    #'port': os.environ['port'],
+    #'user': os.environ['username'],
+    #'password': os.environ['password'],
+    #'database': os.environ['db_name'],
+#}
 
 # connect to DB
-connection = mysql.connector.connect(**mysql_credentials)
+#connection = mysql.connector.connect(**mysql_credentials)
+
+env.name = 'cfpyapi'
+env.port = 3306
+
+aws_rds = env.get_service(label='aws-rds')
+aws_rds.credentials {'uri':'uri', 'password':'password'}
+aws_rds.get_url(host='host', password='password, port='port', username='username') 
 
 # DB operations/ insert app path from cloud.gov
 @app.route('/cfpyapi.app.cloud.gov', methods=['GET'])
