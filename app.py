@@ -5,6 +5,7 @@ from cfenv import AppEnv
 
 app = Flask(__name__)
 app_env = AppEnv()
+env = App()
 
 # Get mysql creds from cloud.gov/import cloud.gov env vars change structure
 
