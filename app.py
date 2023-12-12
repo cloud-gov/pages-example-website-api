@@ -6,6 +6,17 @@ from cfenv import AppEnv
 app = Flask(__name__)
 app_env = AppEnv()
 env = app()
+    
+aws_rds = app_env.get_service(name='lightening-db')
+    
+connection = mysql.connector.connect(
+    host=aws_rds.credentials.get('host'),
+    user=aws_rds.credentials['username'],
+    passwd=aws_rds.credentials.get('password'),
+    database=aws_rds.credentials.get('name'),
+    port=aws_rds.credentials.get('port'),
+)
+
 
 # Get mysql creds from cloud.gov/import cloud.gov env vars change structure
 
@@ -35,16 +46,17 @@ env = app()
 # connect to DB
 #connection = mysql.connector.connect(**mysql_credentials)
 
-env.name = 'cfpyapi'
-env.port = 3306
+#env.name = 'cfpyapi'
+#env.port = 3306
 
-aws_rds = env.get_service(label='aws-rds')
-aws_rds.credentials = {'uri':'uri', 'password':'password'}
-aws_rds.get_url(host='host', password='password', port='port', username='username') 
+#aws_rds = env.get_service(label='aws-rds')
+#aws_rds.credentials = {'uri':'uri', 'password':'password'}
+#aws_rds.get_url(host='host', password='password', port='port', username='username') 
 
 # DB operations/ insert app path from cloud.gov
 @app.route('/cfpyapi.app.cloud.gov', methods=['GET'])
 def get_gif():
+    connection.autocommit = True
     cursor = connection.cursor()
     
     # Execute SELECT query to retrieve GIF URL from cloud.gov
@@ -60,7 +72,7 @@ def get_gif():
     
     if result:
         gif_url = result[0]
-        return jsonify({'gif_url': gif_data})
+        return jsonify({'gif_url': gif_url})
     else:
         return jsonify({'message': 'GIF not found'})
     
