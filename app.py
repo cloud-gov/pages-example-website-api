@@ -5,7 +5,6 @@ from cfenv import AppEnv
 
 app = Flask(__name__)
 app_env = AppEnv()
-env = app()
 
 port = int(os.getenv('PORT', 8080))
     
