@@ -6,6 +6,8 @@ from cfenv import AppEnv
 app = Flask(__name__)
 app_env = AppEnv()
 env = app()
+
+port = int(os.getenv('PORT', 8080))
     
 aws_rds = app_env.get_service(name='lightening-db')
     
@@ -76,6 +78,6 @@ def get_gif():
     else:
         return jsonify({'message': 'GIF not found'})
     
-    if __name__ == '__main__':
-        app.run()
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=port)
 
