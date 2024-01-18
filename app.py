@@ -19,45 +19,10 @@ connection = mysql.connector.connect(
     database=aws_rds.credentials.get('name'),
     port=aws_rds.credentials.get('port'),
 )
-
-
-# Get mysql creds from cloud.gov/import cloud.gov env vars change structure
-
-#mysql_service = app_env.get_service(name='lightening-db')
-#mysql_credentials = mysql_service.credentials
-
-#host = mysql_credentials['host']
-#username = mysql_credentials['username']
-#password = mysql_credentials['password']
-#name = mysql_credentials['name']
-
-#connection = mysql.connector.connect(
-    #host=host,
-    #user=username,
-    #password=password,
-    #database=name
-#)
-
-#mysql_credentials = {
-    #'host': os.environ['host'],
-    #'port': os.environ['port'],
-    #'user': os.environ['username'],
-    #'password': os.environ['password'],
-    #'database': os.environ['db_name'],
-#}
-
-# connect to DB
-#connection = mysql.connector.connect(**mysql_credentials)
-
-#env.name = 'cfpyapi'
-#env.port = 3306
-
-#aws_rds = env.get_service(label='aws-rds')
-#aws_rds.credentials = {'uri':'uri', 'password':'password'}
-#aws_rds.get_url(host='host', password='password', port='port', username='username') 
+ 
 
 # DB operations/ insert app path from cloud.gov
-@app.route('/cfpyapi.app.cloud.gov', methods=['GET'])
+@app.route('/get_gif', methods=['GET'])
 def get_gif():
     connection.autocommit = True
     cursor = connection.cursor()
