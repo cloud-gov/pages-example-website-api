@@ -13,7 +13,7 @@ aws_rds = app_env.get_service(name='lightening-db')
     
 connection = mysql.connector.connect(
     host=aws_rds.credentials.get('host'),
-    user=aws_rds.credentials['username'],
+    user=aws_rds.credentials.get('username'),
     passwd=aws_rds.credentials.get('password'),
     database=aws_rds.credentials.get('name'),
     port=aws_rds.credentials.get('port'),
