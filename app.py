@@ -30,7 +30,7 @@ def get_gif():
     cursor = connection.cursor()
     
     # Execute SELECT query to retrieve GIF URL from cloud.gov
-    query = 'SELECT gif_data FROM pages_content'
+    query = 'SELECT gif_data FROM gifs'
     cursor.execute(query)
     
     # Fetch result
