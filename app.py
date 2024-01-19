@@ -41,7 +41,7 @@ def get_gif():
     connection.close()
     
     if result:
-        gif_url = result[0]
+        gif_url = str(result[0])
         print('gif_url', gif_url)
         return jsonify({'gif_url': gif_url})
     else:
