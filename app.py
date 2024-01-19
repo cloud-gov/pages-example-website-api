@@ -11,7 +11,7 @@ port = int(os.getenv('PORT', 8080))
     
 aws_rds = app_env.get_service(name='lightening-db')
     
-connection = mysql.connector.connect(
+cnx = mysql.connector.connect(
     host=aws_rds.credentials.get('host'),
     user=aws_rds.credentials.get('username'),
     passwd=aws_rds.credentials.get('password'),
@@ -26,8 +26,8 @@ def hello():
 # DB operations/ insert app path from cloud.gov, changed route from '/cfpyapi.app.cloud.gov -> '/get_gif'
 @app.route('/get_gif', methods=['GET'])
 def get_gif():
-    connection.autocommit = True
-    cursor = connection.cursor()
+    cnx.autocommit = True
+    cursor = cnx.cursor()
     
     # Execute SELECT query to retrieve GIF URL from cloud.gov
     query = 'SELECT gif_data FROM gifs'
@@ -38,7 +38,7 @@ def get_gif():
     
     # Close cursor
     cursor.close()
-    connection.close()
+    cnx.close()
     
     if result:
         gif_url = str(result[0])
