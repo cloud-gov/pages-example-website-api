@@ -42,9 +42,9 @@ def get_gif():
     
     if result:
         gif_url = result[0]
-        return jsonify({'gif_url': gif_url})
+        print('gif_url', gif_url)
     else:
-        return jsonify({'message': 'GIF not found'})
+        print('message', 'GIF not found')
     
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)
