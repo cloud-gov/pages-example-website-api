@@ -14,13 +14,13 @@ aws_rds = app_env.get_service(name='lightening-db')
 connection = mysql.connector.connect(
     host=aws_rds.credentials.get('host'),
     user=aws_rds.credentials.get('username'),
-    password=aws_rds.credentials.get('password'),
+    passwd=aws_rds.credentials.get('password'),
     database=aws_rds.credentials.get('name'),
     port=aws_rds.credentials.get('port'),
 )
 @app.route('/', methods=['GET'])
 def hello():
-    return 'Hello World from Flask!'
+    return 'There is a GIF right behind this door!'
 
 
 # DB operations/ insert app path from cloud.gov, changed route from '/cfpyapi.app.cloud.gov -> '/get_gif'
