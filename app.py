@@ -18,9 +18,12 @@ connection = mysql.connector.connect(
     database=aws_rds.credentials.get('name'),
     port=aws_rds.credentials.get('port'),
 )
- 
+@app.route('/', methods=['GET'])
+def hello():
+    return 'Hello World from Flask!'
 
-# DB operations/ insert app path from cloud.gov
+
+# DB operations/ insert app path from cloud.gov, changed route from '/cfpyapi.app.cloud.gov -> '/get_gif'
 @app.route('/get_gif', methods=['GET'])
 def get_gif():
     connection.autocommit = True
