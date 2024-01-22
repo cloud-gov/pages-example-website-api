@@ -1,5 +1,6 @@
 import mysql.connector
 import os
+import tempfile
 from flask import Flask, jsonify, send_file
 from cfenv import AppEnv
 
@@ -37,8 +38,10 @@ def get_gif():
     
     if result:
         gif_data = result[0]
+        with tempfile.NamedTemporaryFile(delete=False) as temp:
+            temp.write(gif_data)
+        
         return send_file(gif_data, mimetype='image/gif')
-    
     else:
         return jsonify({'message': 'GIF not found'}), 404
     
