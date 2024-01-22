@@ -1,6 +1,6 @@
 import mysql.connector
 import os
-from flask import Flask, jsonify
+from flask import Flask, g, jsonify
 from cfenv import AppEnv
 
 
@@ -26,7 +26,6 @@ def hello():
 # DB operations/ insert app path from cloud.gov, changed route from '/cfpyapi.app.cloud.gov -> '/get_gif'
 @app.route('/get_gif', methods=['GET'])
 def get_gif():
-    cnx.autocommit = True
     cursor = cnx.cursor()
     
     # Execute SELECT query to retrieve GIF URL from cloud.gov
@@ -35,10 +34,6 @@ def get_gif():
     
     # Fetch result
     result = cursor.fetchone()
-    
-    # Close cursor
-    cursor.close()
-    cnx.close()
     
     if result:
         gif_url = str(result[0])
