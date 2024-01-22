@@ -1,6 +1,6 @@
 import mysql.connector
 import os
-from flask import Flask, g, jsonify
+from flask import Flask, jsonify, send_file
 from cfenv import AppEnv
 
 
@@ -36,11 +36,10 @@ def get_gif():
     result = cursor.fetchone()
     
     if result:
-        gif_url = str(result[0])
-        print('gif_url', gif_url)
-        return jsonify({'gif_url': gif_url})
+        gif_data = result[0]
+        return send_file(gif_data, mimetype='image/gif')
+    
     else:
-        print('message', 'GIF not found')
         return jsonify({'message': 'GIF not found'}), 404
     
 if __name__ == '__main__':
