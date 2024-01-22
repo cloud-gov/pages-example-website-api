@@ -41,7 +41,7 @@ def get_gif():
         with tempfile.NamedTemporaryFile(delete=False) as temp:
             temp.write(gif_data)
         
-        return send_file(gif_data, mimetype='image/gif')
+        return send_file(temp.name, mimetype='image/gif')
     else:
         return jsonify({'message': 'GIF not found'}), 404
     
