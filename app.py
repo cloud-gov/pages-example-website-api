@@ -12,10 +12,10 @@ port = int(os.getenv('PORT', 8080))
     
 aws_rds = app_env.get_service(name='hurricane')
     
-cnx = psycopg2.connect(
+connection = psycopg2.connect(
     host=aws_rds.credentials.get('host'),
     user=aws_rds.credentials.get('username'),
-    passwd=aws_rds.credentials.get('password'),
+    password=aws_rds.credentials.get('password'),
     database=aws_rds.credentials.get('name'),
     port=aws_rds.credentials.get('port'),
 )
@@ -27,7 +27,7 @@ def hello():
 # DB operations/ insert app path from cloud.gov, changed route from '/cfpyapi.app.cloud.gov -> '/get_gif'
 @app.route('/get_table', methods=['GET'])
 def get_gif():
-    cursor = cnx.cursor(cursor_factory=RealDictCursor)
+    cursor = connection.cursor(cursor_factory=RealDictCursor)
     
     # Execute SELECT query to retrieve table contents from cloud.gov
     query = 'SELECT * FROM fdic_banks'
