@@ -1,8 +1,7 @@
-import mysql.connector
-import os
-import io
-from flask import Flask, jsonify, send_file
+import psycopg2
+from flask import Flask, jsonify
 from cfenv import AppEnv
+from psycopg2.extras import RealDictCursor
 
 
 app = Flask(__name__)
@@ -10,9 +9,9 @@ app_env = AppEnv()
 
 port = int(os.getenv('PORT', 8080))
     
-aws_rds = app_env.get_service(name='lightening-db')
+aws_rds = app_env.get_service(name='hurricane')
     
-cnx = mysql.connector.connect(
+cnx = psycopg2.connect(
     host=aws_rds.credentials.get('host'),
     user=aws_rds.credentials.get('username'),
     passwd=aws_rds.credentials.get('password'),
@@ -21,29 +20,24 @@ cnx = mysql.connector.connect(
 )
 @app.route('/', methods=['GET'])
 def hello():
-    return 'There is a GIF right behind this door!'
+    return 'There is a table right behind this door!'
 
 
 # DB operations/ insert app path from cloud.gov, changed route from '/cfpyapi.app.cloud.gov -> '/get_gif'
-@app.route('/get_gif', methods=['GET'])
+@app.route('/get_table', methods=['GET'])
 def get_gif():
-    cursor = cnx.cursor()
+    cursor = cnx.cursor(cursor_factory=RealDictCursor)
     
-    # Execute SELECT query to retrieve GIF URL from cloud.gov
-    query = 'SELECT gif_data FROM gifs'
+    # Execute SELECT query to retrieve table contents from cloud.gov
+    query = 'SELECT * FROM fdic_banks'
     cursor.execute(query)
     
     # Fetch result
-    result = cursor.fetchone()
+    rows = cursor.fetchall()
+    cursor.close()
     
-    if result:
-        gif_data = result[0]
-        gif_file = io.BytesIO(gif_data)
-        
-        return send_file(gif_file, mimetype='image/gif')
-    else:
-        return jsonify({'message': 'GIF not found'}), 404
-    
+    return jsonify(rows)
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)
 
