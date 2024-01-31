@@ -1,4 +1,5 @@
 import psycopg2
+import os
 from flask import Flask, jsonify
 from cfenv import AppEnv
 from psycopg2.extras import RealDictCursor
