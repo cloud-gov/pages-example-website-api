@@ -26,7 +26,7 @@ def hello():
 
 # DB operations/ insert app path from cloud.gov, changed route from '/cfpyapi.app.cloud.gov -> '/get_gif'
 @app.route('/get_table', methods=['GET'])
-def get_gif():
+def get_table():
     cursor = connection.cursor(cursor_factory=RealDictCursor)
     
     # Execute SELECT query to retrieve table contents from cloud.gov
