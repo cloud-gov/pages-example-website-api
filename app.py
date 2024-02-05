@@ -3,10 +3,12 @@ import os
 from flask import Flask, jsonify
 from cfenv import AppEnv
 from psycopg2.extras import RealDictCursor
+from flask_cors import CORS
 
 
 app = Flask(__name__)
 app_env = AppEnv()
+CORS(app)
 
 port = int(os.getenv('PORT', 8080))
     
