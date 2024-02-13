@@ -35,7 +35,7 @@ def get_table(page):
     offset = (page -1) * 10
     
     # Execute SELECT query to retrieve table contents from cloud.gov
-    query = f'SELECT * FROM fdic_banks LIMIT 10 OFFSET{offset}'
+    query = 'SELECT gif_table FROM fdic'
     cursor.execute(query)
     
     # Fetch result
