@@ -28,11 +28,14 @@ def hello():
 
 # DB operations/ insert app path from cloud.gov, changed route from '/cfpyapi.app.cloud.gov -> '/get_gif'
 @app.route('/get_table', methods=['GET'])
-def get_table():
+def get_table(page):
     cursor = connection.cursor(cursor_factory=RealDictCursor)
     
+    # Calculate offset based on page number
+    offset = (page -1) * 10
+    
     # Execute SELECT query to retrieve table contents from cloud.gov
-    query = 'SELECT * FROM fdic_banks'
+    query = f'SELECT * FROM fdic_banks LIMIT 10 OFFSET{offset}'
     cursor.execute(query)
     
     # Fetch result
