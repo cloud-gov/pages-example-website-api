@@ -25,17 +25,12 @@ connection = psycopg2.connect(
 def hello():
     return 'There is a table right behind this door!'
 
-
-# DB operations/ insert app path from cloud.gov, changed route from '/cfpyapi.app.cloud.gov -> '/get_gif'
 @app.route('/get_table', methods=['GET'])
-def get_table(page):
+def get_table():
     cursor = connection.cursor(cursor_factory=RealDictCursor)
     
-    # Calculate offset based on page number
-    offset = (page -1) * 10
-    
     # Execute SELECT query to retrieve table contents from cloud.gov
-    query = 'SELECT gif_table FROM fdic'
+    query = 'SELECT * FROM fdic_banks'
     cursor.execute(query)
     
     # Fetch result
