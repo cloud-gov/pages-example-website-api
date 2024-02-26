@@ -30,7 +30,7 @@ def get_table():
     cursor = connection.cursor(cursor_factory=RealDictCursor)
     
     # Execute SELECT query to retrieve table contents from cloud.gov
-    query = 'SELECT * FROM fdic_banks'
+    query = 'SELECT * FROM fdic_banks LIMIT 15'
     cursor.execute(query)
     
     # Fetch result
