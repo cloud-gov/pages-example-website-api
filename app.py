@@ -8,7 +8,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 app_env = AppEnv()
-CORS(app, origins=['https://federalist-c8f0d18e-b710-44dc-9412-4b4f26efb0a3.sites.pages.cloud.gov', 'http://127.0.0.1:8081', 'http://127.0.0.1:8080'], headers=['Content-Type'], methods=['GET'])
+CORS(app, origins=['https://federalist-c8f0d18e-b710-44dc-9412-4b4f26efb0a3.sites.pages.cloud.gov'], headers=['Content-Type'], methods=['GET'])
 
 port = int(os.getenv('PORT', 8080)) 
     
@@ -29,11 +29,9 @@ def hello():
 def get_table():
     cursor = connection.cursor(cursor_factory=RealDictCursor)
     
-    # Execute SELECT query to retrieve table contents from cloud.gov
     query = 'SELECT * FROM fdic_banks LIMIT 15'
     cursor.execute(query)
     
-    # Fetch result
     rows = cursor.fetchall()
     cursor.close()
     
