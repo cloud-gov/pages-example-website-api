@@ -34,7 +34,9 @@ Line 13: `port = int(os.getenv('PORT', {whatever port you wish to expose})`
 Line 15: `aws_rds = app_env.get_service(name='your-db-name')`
 
 <br>
+
 *Optional if you wish to serve from the root URL or not*
+
 <br>
 Line 24: `@app.route('/', methods=['GET'])`
 
