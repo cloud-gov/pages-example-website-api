@@ -3,3 +3,5 @@ applications:
 - name: cfpyapi
   command: python app.py
   type: application
+  services:
+  - hurricane
