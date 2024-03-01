@@ -38,6 +38,7 @@ Line 15: `aws_rds = app_env.get_service(name='your-db-name')`
 *Optional if you wish to serve from the root URL or not*
 
 <br>
+
 Line 24: `@app.route('/', methods=['GET'])`
 
 Line 26: `@app.route('/your_sub_route', methods=['GET'])`
