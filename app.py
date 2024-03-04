@@ -8,7 +8,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 app_env = AppEnv()
-CORS(app, origins=['https://federalist-c8f0d18e-b710-44dc-9412-4b4f26efb0a3.sites.pages.cloud.gov'], headers=['Content-Type'], methods=['GET'])
+CORS(app, origins=['https://federalist-31c21015-f923-4733-95df-2e979da3e393.sites.pages.cloud.gov/site/cloud-gov/pages-example-api-website/'], headers=['Content-Type'], methods=['GET'])
 
 port = int(os.getenv('PORT', 8080)) 
     
