@@ -5,5 +5,5 @@ setup(
     version='1.0.0',
     description='cloud.gov API',
     author='cloud.gov',
-    packages=['Santas bag'],
+    packages=['foo'],
 )
