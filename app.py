@@ -12,7 +12,7 @@ CORS(app, origins=['https://federalist-c8f0d18e-b710-44dc-9412-4b4f26efb0a3.site
 
 port = int(os.getenv('PORT', 8080)) 
     
-aws_rds = app_env.get_service(name='hurricane')
+aws_rds = app_env.get_service(name='example-website-api-databse')
     
 connection = psycopg2.connect(
     host=aws_rds.credentials.get('host'),

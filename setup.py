@@ -4,6 +4,6 @@ setup(
     name='cypyapi',
     version='1.0.0',
     description='cloud.gov API',
-    author='Ephraim',
-    packages=['Santas bag'],
+    author='cloud.gov',
+    packages=['foo'],
 )
