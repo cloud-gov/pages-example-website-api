@@ -4,4 +4,4 @@ applications:
   command: python app.py
   type: application
   services:
-  - hurricane
+  - example-website-api-databse
