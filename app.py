@@ -9,7 +9,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 app_env = AppEnv()
 origin = os.getenv('ORIGIN')
-CORS(app, origins=['ORIGIN'], headers=['Content-Type'], methods=['GET'])
+CORS(app, origins=[origin], headers=['Content-Type'], methods=['GET'])
 
 port = int(os.getenv('PORT', 8080)) 
     
