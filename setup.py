@@ -1,9 +1,9 @@
 from setuptools import setup
 
 setup(
-    name='cypyapi',
+    name='cfpyapi',
     version='1.0.0',
     description='cloud.gov API',
-    author='Ephraim',
+    author='cloud.gov',
     packages=['Santas bag'],
 )
