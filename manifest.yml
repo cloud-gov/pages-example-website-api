@@ -1,7 +1,16 @@
 ---
 applications:
 - name: cfpyapi
-  command: python app.py
-  type: application
+  buildpack: python_buildpack
+  routes:
+    - route: cfpyapi.app.cloud.gov
+  processes:
+    - type: web
+      command: python app.py
+      disk_quota: 1G
+      instances: 2
+      memory: 256MB
   services:
-  - hurricane
+    - example-website-api-databse
+  env:
+    ORIGIN: https://federalist-31c21015-f923-4733-95df-2e979da3e393.sites.pages.cloud.gov
