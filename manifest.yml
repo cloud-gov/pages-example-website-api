@@ -3,7 +3,7 @@ applications:
 - name: cfpyapi
   buildpack: python_buildpack
   routes:
-    - route: cfpyapi.app.cloud.gov
+    - route: cfpyapi2.app.cloud.gov
   processes:
     - type: web
       command: python app.py
