@@ -33,7 +33,7 @@ def hello():
 
 @app.route("/get_table", methods=["GET"])
 def get_table():
-    if connection.closed:
+    
         connection = get_connection()
     cursor = connection.cursor(cursor_factory=RealDictCursor)
 
@@ -42,6 +42,7 @@ def get_table():
 
     rows = cursor.fetchall()
     cursor.close()
+        connection.close()
 
     return jsonify(rows)
 
