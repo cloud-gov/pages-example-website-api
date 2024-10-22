@@ -12,19 +12,18 @@ app = Flask(__name__)
 CORS(app, origins=origin)
 
 app_env = AppEnv()
-aws_rds = app_env.get_service(name="example-website-api-databse")
+aws_rds = app_env.get_service(name="example-website-api-database")
 
-def get_connection():
-    connection = psycopg2.connect(
-        host=aws_rds.credentials.get("host"),
-        user=aws_rds.credentials.get("username"),
-        password=aws_rds.credentials.get("password"),
-        database=aws_rds.credentials.get("name"),
-        port=aws_rds.credentials.get("port"),
+
+connection = psycopg2.connect(
+    host=aws_rds.credentials.get("host"),
+    user=aws_rds.credentials.get("username"),
+    password=aws_rds.credentials.get("password"),
+    database=aws_rds.credentials.get("name"),
+    port=aws_rds.credentials.get("port"),
 )
-    return connection
 
-connection = get_connection()
+
 
 @app.route("/", methods=["GET"])
 def hello():
@@ -33,8 +32,7 @@ def hello():
 
 @app.route("/get_table", methods=["GET"])
 def get_table():
-    if connection.closed:
-        connection = get_connection()
+
     cursor = connection.cursor(cursor_factory=RealDictCursor)
 
     query = "SELECT * FROM fdic_banks LIMIT 15"
