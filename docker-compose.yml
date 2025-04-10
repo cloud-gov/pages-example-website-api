@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15.12
+    container_name: pg-database
+    environment:
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: pgpassword
+      POSTGRES_DB: app_db
+    ports:
+    - "5432:5432"
+
+# service: app
+# declare python image, command, install requirements, possibly build own image for app
