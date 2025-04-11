@@ -10,6 +10,22 @@ services:
       POSTGRES_DB: app_db
     ports:
     - "5432:5432"
-
-# service: app
-# declare python image, command, install requirements, possibly build own image for app
+    volumes:
+    - /app:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pguser -d app_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  web:
+    build: ./
+    # Possibly can build image then reference it here
+    container_name: flask-app
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - ORIGIN=http://localhost:5000
+    depends_on:
+        postgres:
+          condition: service_healthy
