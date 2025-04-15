@@ -3,9 +3,9 @@ import psycopg2
 from flask import Flask, jsonify
 from cfenv import AppEnv
 from psycopg2.extras import RealDictCursor
-from psycopg2.pool import ThreadedConnectionPool
-from psycopg2.pool import SimpleConnectionPool
-from psycopg2 import pool
+#from psycopg2.pool import ThreadedConnectionPool
+#from psycopg2.pool import SimpleConnectionPool
+#from psycopg2 import pool
 from flask_cors import CORS
 
 origin = os.getenv("ORIGIN")
@@ -15,9 +15,9 @@ app = Flask(__name__)
 CORS(app, origins=origin)
 
 app_env = AppEnv()
-aws_rds = app_env.get_service(name="example-website-api-database")
+#aws_rds = app_env.get_service(name="example-website-api-database")
 
-# Uncomment after testing
+#Uncomment after testing
 """
 connection_pool = ThreadedConnectionPool(
     minconn=5,
@@ -33,6 +33,7 @@ connection_pool = ThreadedConnectionPool(
 
 #Local Testing below
 #connection_pool uses psycopg2 under the hood
+"""
 connection_pool = ThreadedConnectionPool(
     minconn=5,
     maxconn=20,
@@ -42,16 +43,29 @@ connection_pool = ThreadedConnectionPool(
     database="app_db",
     port=5432
 )
-
+"""
 # Retrieve connection from pool
 # implement try/catch 1. check if this connected 2. get connection and if fails with error then reestablish connection pool and retry within catch
 # ex. try return connection_pool.getconn() except -- and make sure it doesnt loop endlessly 
+"""
 def getconnection():
     return connection_pool.getconn()
 
 #Returns connection to pool for reuse
 def returnconnection(db_connection, close=False):
     connection_pool.putconn(db_connection, close=close)
+"""
+
+# Test Function
+def get_db_connection():
+    conn = psycopg2.connect(
+        host="postgres",
+        database="app_db",
+        user="pguser",
+        password="pgpassword"
+    )
+    conn.autocommit = True
+    return conn
 
 @app.route("/", methods=["GET"])
 def hello():
@@ -60,7 +74,7 @@ def hello():
     except Exception as error:
         return jsonify({"error": str(error)}), 500
 
-
+"""
 @app.route("/get_table", methods=["GET"])
 def get_table():
     db_connection = None
@@ -82,6 +96,29 @@ def get_table():
     finally: 
         if db_connection:
             returnconnection(db_connection)
+"""
+
+# Test query
+@app.route("/get_user", methods=["GET"])
+def get_user():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        
+        query = "SELECT * FROM users LIMIT 1"
+        cursor.execute(query)
+        
+        user = cursor.fetchone()
+        cursor.close
+        conn.close()
+        
+        if user:
+            return jsonify(user)
+        else:
+            return jsonify({"message": "No users found"}), 404
+        
+    except Exception as error:
+        return jsonify ({"error": str(error)}), 500
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=port, threaded=True)
+    app.run(host="0.0.0.0", port=port)
