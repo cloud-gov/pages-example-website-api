@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   web:
@@ -9,6 +9,8 @@ services:
     environment:
       - PORT=5000
       - ORIGIN=http://localhost:5000
+      - DB_HOST=postgres
+      - DB_MAX_CONNECTIONS=10
     depends_on:
       postgres:
         condition: service_healthy
@@ -17,8 +19,8 @@ services:
     image: postgres:15.12
     container_name: pg-database
     environment:
-      POSTGRES_USER: pguser 
-      POSTGRES_PASSWORD: pgpassword 
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: pgpassword
       POSTGRES_DB: app_db
     ports:
       - "5432:5432"

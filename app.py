@@ -14,12 +14,12 @@ port = int(os.getenv("PORT", 8080))
 app = Flask(__name__)
 CORS(app, origins=origin)
 
-app_env = AppEnv()
+# app_env = AppEnv()
 #aws_rds = app_env.get_service(name="example-website-api-database")
 
 #Uncomment after testing
 """
-connection_pool = ThreadedConnectionPool(
+connection_pool = ThreadedConnectionPool(url=database_url
     minconn=5,
     maxconn=20,
     host=aws_rds.credentials.get("host"),
@@ -36,16 +36,16 @@ connection_pool = ThreadedConnectionPool(
 
 connection_pool = ThreadedConnectionPool(
     minconn=1,
-    maxconn=10,
-    host="postgres",
-    user="pguser",
+    maxconn=os.getenv('DB_MAX_CONNECTIONS'),
+    host=os.getenv('DB_HOST'),
+    user=os.getenv('DB_USER'),
     password="pgpassword",
     database="app_db",
 )
 
 # Retrieve connection from pool
 # implement try/catch 1. check if this connected 2. get connection and if fails with error then reestablish connection pool and retry within catch
-# ex. try return connection_pool.getconn() except -- and make sure it doesnt loop endlessly 
+# ex. try return connection_pool.getconn() except -- and make sure it doesnt loop endlessly
 
 def getconnection():
     return connection_pool.getconn()
@@ -79,7 +79,7 @@ def hello():
 def get_table():
     db_connection = None
     try:
-        db_connection = getconnection()    
+        db_connection = getconnection()
         cursor = db_connection.cursor(cursor_factory=RealDictCursor)
 
         query = "SELECT * FROM fdic_banks LIMIT 15"
@@ -93,7 +93,7 @@ def get_table():
     except Exception as error:
         # implement both error logs (app.logger) server way / dont stringify entire error to go back to user / replace 500 with "unexpected error occured"
         return jsonify({"error": str(error)}), 500
-    finally: 
+    finally:
         if db_connection:
             returnconnection(db_connection)
 """
@@ -105,18 +105,18 @@ def get_user():
     try:
         db_connection = getconnection()
         cursor = db_connection.cursor(cursor_factory=RealDictCursor)
-        
+
         query = "SELECT * FROM users LIMIT 1"
         cursor.execute(query)
-        
+
         user = cursor.fetchone()
         cursor.close()
-        
+
         if user:
             return jsonify(user)
         else:
             return jsonify({"message": "No users found"}), 404
-        
+
     except Exception as error:
         return jsonify({"error": str(error)}), 500
     finally:
