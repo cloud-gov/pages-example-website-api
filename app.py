@@ -3,7 +3,7 @@ import psycopg2
 from flask import Flask, jsonify
 from cfenv import AppEnv
 from psycopg2.extras import RealDictCursor
-#from psycopg2.pool import ThreadedConnectionPool
+from psycopg2.pool import ThreadedConnectionPool
 #from psycopg2.pool import SimpleConnectionPool
 #from psycopg2 import pool
 from flask_cors import CORS
@@ -33,21 +33,20 @@ connection_pool = ThreadedConnectionPool(
 
 #Local Testing below
 #connection_pool uses psycopg2 under the hood
-"""
+
 connection_pool = ThreadedConnectionPool(
-    minconn=5,
-    maxconn=20,
-    host="localhost",
+    minconn=1,
+    maxconn=10,
+    host="postgres",
     user="pguser",
     password="pgpassword",
     database="app_db",
-    port=5432
 )
-"""
+
 # Retrieve connection from pool
 # implement try/catch 1. check if this connected 2. get connection and if fails with error then reestablish connection pool and retry within catch
 # ex. try return connection_pool.getconn() except -- and make sure it doesnt loop endlessly 
-"""
+
 def getconnection():
     return connection_pool.getconn()
 
@@ -67,6 +66,7 @@ def get_db_connection():
     conn.autocommit = True
     return conn
 
+"""
 @app.route("/", methods=["GET"])
 def hello():
     try:
@@ -101,16 +101,16 @@ def get_table():
 # Test query
 @app.route("/get_user", methods=["GET"])
 def get_user():
+    db_connection = None
     try:
-        conn = get_db_connection()
-        cursor = conn.cursor(cursor_factory=RealDictCursor)
+        db_connection = getconnection()
+        cursor = db_connection.cursor(cursor_factory=RealDictCursor)
         
         query = "SELECT * FROM users LIMIT 1"
         cursor.execute(query)
         
         user = cursor.fetchone()
-        cursor.close
-        conn.close()
+        cursor.close()
         
         if user:
             return jsonify(user)
@@ -118,7 +118,10 @@ def get_user():
             return jsonify({"message": "No users found"}), 404
         
     except Exception as error:
-        return jsonify ({"error": str(error)}), 500
+        return jsonify({"error": str(error)}), 500
+    finally:
+        if db_connection:
+            returnconnection(db_connection)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=port, threaded=True)
