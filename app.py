@@ -14,12 +14,12 @@ port = int(os.getenv("PORT", 8080))
 app = Flask(__name__)
 CORS(app, origins=origin)
 
-app_env = AppEnv()
+#app_env = AppEnv()
 #aws_rds = app_env.get_service(name="example-website-api-database")
 
 #Uncomment after testing
 """
-connection_pool = ThreadedConnectionPool(
+connection_pool = ThreadedConnectionPool(url=database_url
     minconn=5,
     maxconn=20,
     host=aws_rds.credentials.get("host"),
@@ -36,9 +36,9 @@ connection_pool = ThreadedConnectionPool(
 
 connection_pool = ThreadedConnectionPool(
     minconn=1,
-    maxconn=10,
-    host="postgres",
-    user="pguser",
+    maxconn=os.getenv('DB_MAX_CONNECTIONS'),
+    host=os.getenv('DB_HOST'),
+    user=os.getenv('DB_USER'),
     password="pgpassword",
     database="app_db",
 )
