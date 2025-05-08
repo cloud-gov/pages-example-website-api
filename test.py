@@ -33,7 +33,7 @@ class DBConnectionManager:
 @app.get("/get_user")
 def get_user():
     with DBConnectionManager() as connection:
-        cursor = connection.cursor()
+        cursor = connection.cursor(cursor_factory=RealDictCursor)
         query = "SELECT * FROM users LIMIT 1"
         cursor.execute(query)
         user = cursor.fetchone()
