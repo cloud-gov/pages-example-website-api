@@ -1,66 +1,71 @@
 import os
+import pytest
+from fastapi import FastAPI
+from fastapi.testclient import TestClient
 import psycopg2
-from flask import Flask, jsonify
-from cfenv import AppEnv
 from psycopg2.extras import RealDictCursor
 from psycopg2.pool import ThreadedConnectionPool
-from flask_cors import CORS
 
-origin = os.getenv("ORIGIN")
-port = int(os.getenv("PORT", 8080))
+# Test app
+app = FastAPI()
 
-app = Flask(__name__)
-CORS(app, origins=origin)
-
-connection_pool = ThreadedConnectionPool(
+# Create single connection pool
+pool = ThreadedConnectionPool(
     minconn=1,
-    maxconn=os.getenv('DB_MAX_CONNECTIONS'),
-    host=os.getenv('DB_HOST'),
-    user=os.getenv('DB_USER'),
-    password="pgpassword",
-    database="app_db",
+    maxconn=5,
+    host='localhost',
+    user='pguser',
+    password='pgpassword',
+    database='app_db'
 )
 
-
-def getconnection():
-    return connection_pool.getconn()
-
-#Returns connection to pool for reuse
-def returnconnection(db_connection, close=False):
-    connection_pool.putconn(db_connection, close=close)
+# Context manager for DB connections
+class DBConnectionManager:
+    def __enter__(self):
+        self.connection = pool.getconn()
+        return self.connection
     
-
-@app.route("/", methods=["GET"])
-def hello():
-    try:
-        return "There is a table right behind this door!"
-    except Exception as error:
-        return jsonify({"error": str(error)}), 500
-    
-# Test query
-@app.route("/get_user", methods=["GET"])
+    def __exit__(self, exc_type, exc_value, exc_traceback):
+        if self.connection:
+            pool.putconn(self.connection)
+            
+# Function to test
+@app.get("/get_user")
 def get_user():
-    db_connection = None
-    try:
-        db_connection = getconnection()
-        cursor = db_connection.cursor(cursor_factory=RealDictCursor)
-        
+    with DBConnectionManager() as connection:
+        cursor = connection.cursor()
         query = "SELECT * FROM users LIMIT 1"
         cursor.execute(query)
-        
         user = cursor.fetchone()
         cursor.close()
         
         if user:
-            return jsonify(user)
+            return user
         else:
-            return jsonify({"message": "No users found"}), 404
+            return {"message": "No users found!"}, 400
         
-    except Exception as error:
-        return jsonify({"error": str(error)}), 500
-    finally:
-        if db_connection:
-            returnconnection(db_connection)
+# Test Client
+client = TestClient(app)
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=port, threaded=True)
+# Test the get_user function
+def test_get_user():
+    response = client.get("/get_user")
+    
+    # Success Response
+    assert response.status_code == 200
+    
+    # Response contains user data
+    user_data = response.json()
+    assert "id" in user_data
+    assert "name" in user_data
+    assert "created_on" in user_data
+    
+    # Name pattern check
+    assert user_data["name"].startswith("User")
+    
+    # Cleanup function / Close connection pool
+    @pytest.fixture(scope="session", autouse=True)
+    def cleanup():
+        yield
+        if pool:
+            pool.closeall()

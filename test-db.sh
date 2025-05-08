@@ -12,6 +12,8 @@ sleep 5 #A small wait time for the database to initialize
 
 echo "Creating table and injecting mock data..."
 docker exec -i pg-database psql -U pguser -d app_db << EOF
+DROP TABLE IF EXISTS users;
+
 CREATE TABLE users (
     id serial PRIMARY KEY,
     name text NOT NULL,
