@@ -9,7 +9,7 @@ from psycopg2.pool import ThreadedConnectionPool
 # Test app
 app = FastAPI()
 
-# Create single connection pool
+# Create single connection pool / Test values
 pool = ThreadedConnectionPool(
     minconn=1,
     maxconn=5,
