@@ -31,8 +31,6 @@ def setup_connection_pool():
 # Immediately create pool at module import 
 connection_pool = setup_connection_pool()
 
-# Maybe dont need atexit if using context manager per psycopg3 docs
-atexit.register(connection_pool.close)
 
 # Recreate pool if it dies
 def recreate_connection_pool():
@@ -62,29 +60,27 @@ def hello():
     except Exception as error:
         return jsonify({"error": str(error)}), 500
 
+def fetch_fdic_banks(pool):
+    with pool.connection() as conn:
+        cursor = conn.cursor(row_factory=dict_row)
+        cursor.execute("SELECT * FROM fdic_banks LIMIT 15")
+        return jsonify(cursor.fetchall())
+
 @app.route("/get_table", methods=["GET"])
 def get_table():   
     global connection_pool
     try:
         # Using the method and not the pool itself as the context manager
-        with connection_pool.connection() as conn:
-                cursor = conn.cursor(row_factory=dict_row)
-                cursor.execute("SELECT * FROM fdic_banks LIMIT 15")
-                rows = cursor.fetchall()
-        return jsonify(rows)
-
+        return fetch_fdic_banks(connection_pool)
     except OperationalError:
+                
+                
     #DB error, recreate pool
         connection_pool = recreate_connection_pool()
     
     # Use new pool
     try:
-        with connection_pool.connection() as conn:
-                cursor = conn.cursor(row_factory=dict_row)
-                cursor.execute("SELECT * FROM fdic_banks LIMIT 15")
-                rows = cursor.fetchall()
-        return jsonify(rows)
-    
+        return fetch_fdic_banks(connection_pool)
     except Exception as error:
         return jsonify({"error": "Database connection failed"}), 500
     
