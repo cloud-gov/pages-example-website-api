@@ -13,3 +13,4 @@ six==1.16.0
 Werkzeug==3.0.6
 requests==2.28.1
 psycopg[pool]>=3.0.0
+fastapi[standard]==0.115.12

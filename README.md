@@ -107,8 +107,6 @@ Install required Python packages:
 
 `pip install requirements.txt`
 
-`pip install "fastapi[standard]"`
-
 ### Setup Test Database
 
 Run the database setup script to create a Docker container with PostgreSQL and seed it with mock data.
