@@ -92,8 +92,6 @@ Line 14: `- {your_db_name}`
 - **Docker and Docker Compose** (v20.10.0+)
 - **Python 3.8+**
 - **pip**
-- **pytest** (installed via `requirements.txt`)
-- **FastAPI**
 
 ### Dependencies
 
