@@ -138,7 +138,7 @@ The test will:
 
 - **Database Connection Issues**: Ensure Docker containers are running with `docker ps`
 - **Port Conflicts**: Check if port 5432 is already in use
-- -**Permission Denied**: You may need to make the `test-db.sh` script executable with `chmod +x test-db.sh`
+- **Permission Denied**: You may need to make the `test-db.sh` script executable with `chmod +x test-db.sh`
 
 ## Cleanup
 
