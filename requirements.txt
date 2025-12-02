@@ -10,7 +10,7 @@ MarkupSafe==2.1.5
 orderedmultidict==1.0.1
 psycopg2-binary==2.9.9
 six==1.16.0
-Werkzeug==3.0.6
+Werkzeug==3.1.4
 requests==2.32.5
 psycopg[pool]>=3.0.0
 fastapi[standard]==0.115.12
